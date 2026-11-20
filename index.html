@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0d0d0d">
+<title>Your Name — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d0d; --surface:#161616; --surface-2:#1e1e1e; --line:#2a2a2a;
+    --text:#f2f2f2; --muted:#9a9a9a; --accent:#c8f169; --accent-ink:#0d0d0d;
+    --radius:20px; --max:1200px;
+  }
+  [data-theme="light"]{
+    --bg:#f6f5f2; --surface:#ffffff; --surface-2:#efeee9; --line:#e2e0da;
+    --text:#111111; --muted:#6b6b6b; --accent:#3d5afe; --accent-ink:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+  a{color:inherit}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .serif{font-family:"Instrument Serif",serif;font-weight:400;font-style:italic}
+
+  /* NAV */
+  nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;
+      background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border:1px solid var(--line);border-radius:999px;padding:6px}
+  nav a,nav button{font:500 14px Inter,sans-serif;color:var(--text);text-decoration:none;background:none;border:0;cursor:pointer;
+      padding:8px 14px;border-radius:999px;display:flex;align-items:center;gap:8px;transition:background .2s}
+  nav a:hover,nav button:hover,nav a.active{background:var(--surface-2)}
+  kbd{font:500 11px Inter,sans-serif;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  nav .cta{background:var(--text);color:var(--bg)}
+  nav .cta:hover{background:var(--text);opacity:.85}
+  @media(max-width:640px){kbd{display:none}nav a,nav button{padding:8px 10px}}
+
+  section{padding:120px 0 60px}
+  .eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  h2{font-size:clamp(36px,5vw,56px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin-bottom:20px}
+
+  /* HERO */
+  #home{padding-top:160px}
+  .hero h1{font-size:clamp(44px,7.5vw,96px);line-height:.98;letter-spacing:-.045em;font-weight:600;max-width:12ch}
+  .hero h1 .serif{color:var(--accent);letter-spacing:-.02em}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:28px;color:var(--muted);font-size:15px}
+  .hero-meta span{display:flex;align-items:center;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 4px color-mix(in srgb,#3ddc84 25%,transparent);animation:pulse 2s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 7px transparent}}
+
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:14px;margin-top:64px}
+  .tile{border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;position:relative;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+  .tile:hover{transform:translateY(-4px) scale(1.01)}
+  .tile .ui{position:absolute;inset:16px;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+  .tile .ui::before,.tile .ui::after{content:"";position:absolute;left:12px;height:8px;border-radius:4px;background:rgba(255,255,255,.55)}
+  .tile .ui::before{top:14px;width:40%}
+  .tile .ui::after{top:30px;width:65%;background:rgba(255,255,255,.3)}
+  .t1{grid-column:span 2;grid-row:span 2;background:linear-gradient(135deg,#5b5bf7,#a35bf7)}
+  .t2{background:linear-gradient(135deg,#ff7a59,#ffb347)}
+  .t3{grid-row:span 2;background:linear-gradient(160deg,#0f9b8e,#3ddc84)}
+  .t4{background:linear-gradient(135deg,#232526,#5a5f66)}
+  .t5{background:linear-gradient(135deg,#f7559a,#ff9a8b)}
+  .t6{grid-column:span 2;background:linear-gradient(135deg,#1e3c72,#2a7cd6)}
+  .t7{background:linear-gradient(135deg,#c8f169,#5fd068)}
+  @media(max-width:760px){.bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:120px}.t3{grid-row:span 1}}
+
+  /* WORK */
+  .cases{display:grid;gap:20px;margin-top:40px}
+  .case{display:grid;grid-template-columns:1.1fr 1fr;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:28px;overflow:hidden;
+        transition:border-color .3s}
+  .case:hover{border-color:var(--muted)}
+  .case-body{padding:40px;display:flex;flex-direction:column;gap:18px}
+  .case h3{font-size:30px;letter-spacing:-.02em;font-weight:600;line-height:1.1}
+  .case .tag{font-family:"Instrument Serif",serif;font-style:italic;font-size:22px;color:var(--muted);line-height:1.2}
+  .case p{color:var(--muted);font-size:15.5px}
+  .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-top:18px;border-top:1px solid var(--line);font-size:14px}
+  .meta dt{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+  .stats{display:flex;gap:28px;flex-wrap:wrap}
+  .stats b{display:block;font-size:26px;letter-spacing:-.02em}
+  .stats small{color:var(--muted);font-size:12.5px}
+  .btn{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;background:var(--text);color:var(--bg);
+       text-decoration:none;font-weight:500;font-size:14.5px;transition:gap .25s}
+  .btn:hover{gap:16px}
+  .case-visual{min-height:340px;position:relative;overflow:hidden}
+  .case-visual .phone{position:absolute;bottom:-40px;left:50%;transform:translateX(-50%) rotate(-4deg);width:46%;aspect-ratio:9/18;border-radius:28px;
+        background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .case:hover .phone{transform:translateX(-50%) rotate(0deg) translateY(-12px)}
+  .case-visual .phone::before{content:"";position:absolute;inset:18px 16px auto;height:90px;border-radius:14px;background:rgba(255,255,255,.25)}
+  .case-visual .phone::after{content:"";position:absolute;inset:122px 16px auto;height:160px;border-radius:14px;background:repeating-linear-gradient(rgba(255,255,255,.18) 0 22px,transparent 22px 34px)}
+  .v1{background:linear-gradient(135deg,#3d5afe,#00b8d4)}
+  .v2{background:linear-gradient(135deg,#ff6a3d,#ffc94d)}
+  .v3{background:linear-gradient(135deg,#7b2ff7,#f107a3)}
+  .v4{background:linear-gradient(135deg,#0f9b8e,#c8f169)}
+  @media(max-width:860px){.case{grid-template-columns:1fr}.case-visual{order:-1;min-height:260px}.case-body{padding:28px}}
+
+  /* PLAY */
+  .play-grid{columns:3 280px;column-gap:14px;margin-top:40px}
+  .play{break-inside:avoid;margin-bottom:14px;border-radius:var(--radius);overflow:hidden;position:relative;border:1px solid var(--line);cursor:default}
+  .play .art{width:100%;display:block}
+  .play figcaption{position:absolute;left:12px;bottom:12px;right:12px;display:flex;justify-content:space-between;align-items:center;
+       background:rgba(13,13,13,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;padding:8px 12px;border-radius:12px;font-size:13.5px;
+       opacity:0;transform:translateY(8px);transition:.3s}
+  .play:hover figcaption{opacity:1;transform:none}
+  .play figcaption span{color:#bbb}
+  .art.anim{background-size:300% 300%;animation:drift 8s ease infinite}
+  @keyframes drift{50%{background-position:100% 100%}}
+
+  /* ABOUT */
+  .about{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:start}
+  .about p{color:var(--muted);font-size:17px;margin-bottom:16px}
+  .about p strong{color:var(--text);font-weight:500}
+  .portrait{aspect-ratio:4/5;border-radius:28px;background:linear-gradient(160deg,var(--surface-2),var(--surface));border:1px solid var(--line);
+       display:grid;place-items:center;color:var(--muted);font-size:14px;position:relative;overflow:hidden}
+  .portrait svg{width:45%;opacity:.35}
+  .lists{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:64px}
+  .lists h4{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500;margin-bottom:8px}
+  .row{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .row div b{display:block;font-weight:500}
+  .row div small{color:var(--muted);font-size:14px}
+  .row time{color:var(--muted);font-size:14px;white-space:nowrap}
+  @media(max-width:860px){.about,.lists{grid-template-columns:1fr}.portrait{max-width:380px}}
+
+  /* CONTACT */
+  #contact{padding-bottom:80px}
+  .contact-card{background:var(--surface);border:1px solid var(--line);border-radius:32px;padding:clamp(32px,6vw,80px);text-align:center}
+  .contact-card h2{font-size:clamp(40px,7vw,88px);max-width:14ch;margin:0 auto 32px}
+  .rotator{display:inline-block;color:var(--accent);min-width:4.2ch;text-align:left}
+  .rotator span{display:inline-block;animation:in .5s cubic-bezier(.2,.8,.2,1)}
+  @keyframes in{from{opacity:0;transform:translateY(40%);filter:blur(6px)}}
+  .email{display:inline-flex;align-items:center;gap:12px;font-size:clamp(18px,2.4vw,24px);padding:14px 24px;border-radius:999px;border:1px solid var(--line);
+       background:var(--bg);cursor:pointer;color:var(--text);font-family:inherit;transition:border-color .2s}
+  .email:hover{border-color:var(--muted)}
+  .email small{font-size:13px;color:var(--muted)}
+  .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .links a{padding:10px 18px;border-radius:999px;background:var(--surface-2);text-decoration:none;font-size:14.5px;transition:opacity .2s}
+  .links a:hover{opacity:.75}
+
+  footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:28px 0 100px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line)}
+
+  /* High-five widget */
+  .hf{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:12px;
+      background:color-mix(in srgb,var(--surface) 85%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 16px;font-size:13px;color:var(--muted);user-select:none}
+  .hf button{border:0;background:var(--accent);color:var(--accent-ink);font:600 13px Inter,sans-serif;border-radius:999px;padding:8px 14px;cursor:pointer;transition:transform .1s}
+  .hf button:active{transform:scale(.92)}
+  .hf .count{font-variant-numeric:tabular-nums;color:var(--text);font-weight:600;letter-spacing:.08em}
+  .hand{display:inline-block}
+  .hand.pop{animation:pop .35s}
+  @keyframes pop{40%{transform:scale(1.5) rotate(-15deg)}}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;
+      font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:60}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* CASE STUDY */
+  [hidden]{display:none!important}
+  section,.cs-sec{scroll-margin-top:90px}
+  .cs-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:56px;padding-top:120px}
+  .toc{position:sticky;top:100px;align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+  .toc button,.toc a{all:unset;cursor:pointer;color:var(--muted);padding:6px 12px;border-left:2px solid var(--line);transition:.2s}
+  .toc button:hover,.toc a:hover{color:var(--text)}
+  .toc button.on{color:var(--text);border-color:var(--accent)}
+  .toc .back{border:0;padding:6px 0 18px;color:var(--text);font-weight:500}
+  .toc .back.bottom{padding:18px 0 0}
+  @media(max-width:900px){.cs-layout{grid-template-columns:1fr;gap:0}.toc{display:none}}
+  .back-m{display:none;margin-bottom:24px;color:var(--muted);text-decoration:none;font-size:14px}
+  @media(max-width:900px){.back-m{display:inline-block}}
+  .cs-hero h1{font-size:clamp(44px,6.5vw,80px);line-height:1;letter-spacing:-.04em;font-weight:600;margin:6px 0 14px}
+  .cs-hero .tag{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(22px,2.6vw,30px);color:var(--muted);line-height:1.2}
+  .cs-hero .read{display:inline-block;margin-top:18px;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  .cs-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:32px 0;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:15px}
+  .cs-meta dt{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  @media(max-width:600px){.cs-meta{grid-template-columns:1fr}}
+  .cs-sec{padding:64px 0 8px}
+  .cs-sec h2{font-size:clamp(30px,3.6vw,42px);margin-bottom:18px}
+  .cs-sec h3{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px}
+  .prose p,.prose li{color:var(--muted);font-size:17px;max-width:68ch}
+  .prose p+p,.prose ul+p{margin-top:14px}
+  .prose ul{padding-left:20px;margin-top:14px;display:grid;gap:8px}
+  .ph{border-radius:22px;border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;color:rgba(255,255,255,.75);
+      font-size:13px;letter-spacing:.04em;margin-top:24px}
+  .ph::after{content:attr(data-label);background:rgba(0,0,0,.25);padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+  .ph .ui{position:absolute;inset:8% 10%;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
+  .cap{color:var(--muted);font-size:14px;margin-top:10px}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:24px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+  .stat b{display:block;font-size:clamp(30px,3.4vw,42px);letter-spacing:-.03em;line-height:1.1}
+  .stat small{color:var(--muted);font-size:14px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+  @media(max-width:720px){.two,.three{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px}
+  .card p,.card li{color:var(--muted);font-size:15.5px}
+  .card ul{padding-left:18px;display:grid;gap:6px;margin-top:8px}
+  .label{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px}
+  .persona .avatar{width:56px;height:56px;border-radius:50%;margin-bottom:16px}
+  .card.good{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+  .pin{position:absolute;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:600 13px Inter,sans-serif;
+       display:grid;place-items:center;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 30%,transparent);z-index:2}
+  .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
+  .notes .card h3{display:flex;gap:10px;align-items:center;font-size:16px}
+  .notes .card h3 i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:12px;display:grid;place-items:center}
+  .ba{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/9;margin-top:24px;border:1px solid var(--line);user-select:none}
+  .ba .side{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:13px;letter-spacing:.04em}
+  .ba .side span{background:rgba(0,0,0,.3);padding:6px 12px;border-radius:999px}
+  .ba .before{background:repeating-linear-gradient(0deg,#3a3a3a 0 30px,#444 30px 32px),#3a3a3a;filter:grayscale(1)}
+  .ba .after{clip-path:inset(0 0 0 50%)}
+  .ba .handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;pointer-events:none}
+  .ba .handle::after{content:"⇆";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-size:16px}
+  .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+  .quote{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px}
+  .quote p{font-family:"Instrument Serif",serif;font-style:italic;font-size:22px;line-height:1.3;color:var(--text);margin-bottom:18px}
+  .quote b{display:block;font-weight:500;font-size:15px}
+  .quote small{color:var(--muted);font-size:14px}
+  .more{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+  .more a{text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:transform .3s,border-color .3s}
+  .more a:hover{transform:translateY(-4px);border-color:var(--muted)}
+  .more .thumb{height:150px}
+  .more div.t{padding:16px 18px}
+  .more b{display:block;font-weight:600}
+  .more small{color:var(--muted);font-size:14px}
+  @media(max-width:720px){.more{grid-template-columns:1fr}}
+  /* real images */
+  .case-visual.shot{display:flex;align-items:flex-end;justify-content:flex-end;padding:40px 0 0 40px}
+  .case-visual.shot img{width:115%;max-width:none;border-radius:14px 0 0 0;box-shadow:0 20px 60px rgba(0,0,0,.4);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .case:hover .case-visual.shot img{transform:translate(-10px,-10px)}
+  .shotbox{margin-top:24px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#fff;cursor:zoom-in;position:relative}
+  .shotbox img{display:block;width:100%;height:auto}
+  .shotbox.tall{max-height:900px}
+  .shotbox.tall::after{content:"Click to view full image";position:absolute;left:0;right:0;bottom:0;padding:60px 0 18px;text-align:center;font-size:13px;color:#111;
+       background:linear-gradient(transparent,#fff 70%)}
+  .iters{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}
+  .iters figure{cursor:zoom-in}
+  .iters .frame{height:300px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff}
+  .iters img{width:100%;display:block}
+  .iters figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+  @media(max-width:900px){.iters{grid-template-columns:repeat(2,1fr)}}
+  .goal{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px}
+  .goal.hl{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .goal.hl p{color:inherit;opacity:.85}
+  .goal h3{font-size:17px;margin-bottom:6px}
+  .goal p{color:var(--muted);font-size:14.5px}
+  .four{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+  @media(max-width:900px){.four{grid-template-columns:1fr 1fr}}
+  @media(max-width:500px){.four{grid-template-columns:1fr}}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+  @media(max-width:800px){.split{grid-template-columns:1fr}}
+  .modules{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:20px}
+  .modules .card{padding:18px}
+  .modules h3{font-size:15.5px;margin-bottom:4px}
+  .modules p{font-size:14px}
+  .bigquote{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(30px,4vw,48px);line-height:1.1;margin-bottom:18px}
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.92);overflow:auto;display:none;cursor:zoom-out;padding:60px 20px}
+  .lb.open{display:block}
+  .lb img{display:block;margin:0 auto;max-width:min(1600px,100%);height:auto;border-radius:10px}
+  .lb button{position:fixed;top:16px;right:20px;background:#fff;color:#111;border:0;border-radius:999px;width:40px;height:40px;font-size:18px;cursor:pointer}
+  .totop{position:fixed;right:20px;bottom:20px;z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--text);
+         cursor:pointer;font-size:18px;opacity:0;pointer-events:none;transition:.3s}
+  .totop.show{opacity:1;pointer-events:auto}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <a href="#home" data-key="h">Home</a>
+  <a href="#work" data-key="w">Work</a>
+  <a href="#play" data-key="p">Play</a>
+  <a href="#about" data-key="a">About</a>
+  <a href="#contact" class="cta">Contact</a>
+</nav>
+
+<main class="wrap">
+ <div id="caseView" hidden></div>
+ <div id="homeView">
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="eyebrow reveal">Your Name — Product Designer</div>
+    <h1 class="reveal">Designing products that feel <span class="serif">effortless.</span></h1>
+    <div class="hero-meta reveal">
+      <span><i class="dot"></i> Currently designing at Company Name</span>
+      <span>📍 Your City, Country</span>
+      <span>Open to collaborations</span>
+    </div>
+    <div class="bento">
+      <div class="tile t1 reveal"><div class="ui"></div></div>
+      <div class="tile t2 reveal"></div>
+      <div class="tile t3 reveal"><div class="ui"></div></div>
+      <div class="tile t4 reveal"></div>
+      <div class="tile t5 reveal"></div>
+      <div class="tile t6 reveal"><div class="ui"></div></div>
+      <div class="tile t7 reveal"></div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="eyebrow reveal">Selected work</div>
+    <h2 class="reveal">Case studies</h2>
+    <div class="cases">
+
+      <article class="case reveal">
+        <div class="case-body">
+          <h3>Project One</h3>
+          <div class="tag">A one-line tagline about the problem you solved.</div>
+          <p>Two or three sentences describing the product, your role in it, and the outcome. Keep it short so people scan to the numbers.</p>
+          <div class="stats">
+            <div><b>30k+</b><small>monthly visits</small></div>
+            <div><b>−60%</b><small>time to complete</small></div>
+          </div>
+          <dl class="meta"><div><dt>Year</dt><dd>2026</dd></div><div><dt>Role</dt><dd>Lead Designer</dd></div><div><dt>Read</dt><dd>8 min</dd></div></dl>
+          <a class="btn" href="#case-1">View case study →</a>
+        </div>
+        <div class="case-visual v1"><div class="phone"></div></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-body">
+          <h3>Project Two</h3>
+          <div class="tag">A side project you built and shipped yourself.</div>
+          <p>Describe what it is, who uses it, and what you learned taking it from idea to real users.</p>
+          <div class="stats">
+            <div><b>1,500+</b><small>users</small></div>
+            <div><b>100+</b><small>paying subscribers</small></div>
+          </div>
+          <dl class="meta"><div><dt>Years</dt><dd>2025–26</dd></div><div><dt>Role</dt><dd>Founder</dd></div><div><dt>Read</dt><dd>6 min</dd></div></dl>
+          <a class="btn" href="#case-2">View case study →</a>
+        </div>
+        <div class="case-visual v2"><div class="phone"></div></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-body">
+          <h3>AmbitionBox Employer Dashboard</h3>
+          <div class="tag">Revamping the employer dashboard.</div>
+          <p>A single, centralised home for companies on AmbitionBox to track followers, reviews, ratings and interview insights, and act on them.</p>
+          <div class="stats">
+            <div><b>11</b><small>modules in one view</small></div>
+            <div><b>5</b><small>design iterations</small></div>
+          </div>
+          <dl class="meta"><div><dt>Year</dt><dd>2024</dd></div><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Read</dt><dd>6 min</dd></div></dl>
+          <a class="btn" href="#case-3">View case study →</a>
+        </div>
+        <div class="case-visual shot" style="background:linear-gradient(135deg,#1b2a6b,#3d5afe)"><img src="img/hero.jpg" alt="AmbitionBox employer dashboard"></div>
+      </article>
+
+      <article class="case reveal">
+        <div class="case-body">
+          <h3>Project Four</h3>
+          <div class="tag">Turning a slow process into a fast one.</div>
+          <p>Explain the before and after: what was painful, what you changed, and how you measured it.</p>
+          <div class="stats">
+            <div><b>6 wks → 1</b><small>turnaround</small></div>
+            <div><b>95%</b><small>satisfaction</small></div>
+          </div>
+          <dl class="meta"><div><dt>Year</dt><dd>2025</dd></div><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Read</dt><dd>7 min</dd></div></dl>
+          <a class="btn" href="#case-4">View case study →</a>
+        </div>
+        <div class="case-visual v4"><div class="phone"></div></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play">
+    <div class="eyebrow reveal">Play</div>
+    <h2 class="reveal">Side projects &amp; <span class="serif">experiments</span></h2>
+    <p class="reveal" style="color:var(--muted);max-width:56ch;font-size:17px">Visual explorations, branding, motion and things I made just because. Swap these tiles for your own images or videos.</p>
+    <div class="play-grid">
+      <figure class="play reveal"><div class="art anim" style="height:340px;background-image:linear-gradient(135deg,#ff6a3d,#7b2ff7,#00b8d4)"></div><figcaption>Brand identity <span>2024</span></figcaption></figure>
+      <figure class="play reveal"><div class="art" style="height:220px;background:radial-gradient(circle at 30% 30%,#c8f169,#0f9b8e)"></div><figcaption>Poster series <span>2023</span></figcaption></figure>
+      <figure class="play reveal"><div class="art anim" style="height:280px;background-image:linear-gradient(45deg,#1e3c72,#f7559a,#ffc94d)"></div><figcaption>Motion study <span>2025</span></figcaption></figure>
+      <figure class="play reveal"><div class="art" style="height:260px;background:conic-gradient(from 90deg,#232526,#5a5f66,#232526)"></div><figcaption>Signage system <span>2022</span></figcaption></figure>
+      <figure class="play reveal"><div class="art" style="height:360px;background:linear-gradient(180deg,#3d5afe,#a35bf7)"></div><figcaption>Packaging <span>2023</span></figcaption></figure>
+      <figure class="play reveal"><div class="art anim" style="height:200px;background-image:linear-gradient(90deg,#ffb347,#ff7a59,#f107a3)"></div><figcaption>3D experiment <span>2025</span></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="eyebrow reveal">About</div>
+    <div class="about">
+      <div class="reveal">
+        <h2>My story</h2>
+        <p>I'm a product designer with <strong>X+ years</strong> of experience across agency and in-house teams, working in <strong>industry one, industry two and industry three</strong>.</p>
+        <p>Write a short paragraph about how you work: what you care about, the kinds of problems you like, and how you collaborate with engineers and product.</p>
+        <p>Add a personal line too: what you do when you're not designing.</p>
+      </div>
+      <div class="portrait reveal" aria-label="Portrait placeholder">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      </div>
+    </div>
+    <div class="lists">
+      <div class="reveal">
+        <h4>Experience</h4>
+        <div class="row"><div><b>Company Name</b><small>Senior Product Designer</small></div><time>2023 — Now</time></div>
+        <div class="row"><div><b>Company Name</b><small>Product Designer</small></div><time>2021 — 2023</time></div>
+        <div class="row"><div><b>Agency Name</b><small>Visual Designer</small></div><time>2019 — 2021</time></div>
+        <div class="row"><div><b>Brand Name</b><small>Graphic Designer</small></div><time>2019</time></div>
+      </div>
+      <div class="reveal">
+        <h4>Recognition</h4>
+        <div class="row"><div><b>Award Name</b><small>For Project One</small></div><time>2026</time></div>
+        <div class="row"><div><b>Award Name</b><small>For Project Four</small></div><time>2025</time></div>
+        <div class="row"><div><b>Award Name</b><small>For Project name</small></div><time>2024</time></div>
+      </div>
+    </div>
+  </section>
+ </div><!-- /homeView -->
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-card reveal">
+      <div class="eyebrow" style="justify-content:center">Contact</div>
+      <h2>Let's <span class="rotator" id="rot"><span>create</span></span> something great together.</h2>
+      <button class="email" id="copyEmail">hello@yourname.com <small>Copy</small></button>
+      <div class="links">
+        <a href="#">Résumé ↗</a>
+        <a href="https://www.linkedin.com/">LinkedIn ↗</a>
+        <a href="https://dribbble.com/">Dribbble ↗</a>
+        <a href="https://www.instagram.com/">Instagram ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© <span id="yr"></span> Your Name</span>
+    <span>Press <kbd>H</kbd> <kbd>W</kbd> <kbd>P</kbd> <kbd>A</kbd> to jump · <kbd>T</kbd> for theme</span>
+  </footer>
+</main>
+
+<div class="hf" aria-live="polite">
+  <span>Press <kbd>Space</kbd> or tap to high-five</span>
+  <span class="count" id="hfCount">00000</span>
+  <button id="hfBtn" aria-label="High five"><span class="hand" id="hand">✋</span></button>
+</div>
+<div class="toast" id="toast"></div>
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+<div class="lb" id="lb" role="dialog" aria-label="Image viewer"><button aria-label="Close">✕</button><img alt=""></div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Theme
+  const root = document.documentElement;
+  const store = { get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}} };
+  if (store.get('theme')) root.dataset.theme = store.get('theme');
+  function toggleTheme(){ root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; store.set('theme', root.dataset.theme); }
+
+  // Keyboard shortcuts
+  const keys = { h:'#home', w:'#work', p:'#play', a:'#about', c:'#contact' };
+  document.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
+    const k = e.key.toLowerCase();
+    if (keys[k]) { if (location.hash === keys[k]) document.querySelector(keys[k]).scrollIntoView({behavior:'smooth'}); else location.hash = keys[k]; }
+    else if (k === 't') toggleTheme();
+    else if (e.code === 'Space') { e.preventDefault(); highFive(); }
+  });
+
+  // Active nav on scroll
+  const links = [...document.querySelectorAll('nav a[data-key]')];
+  const secObs = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+en.target.id));
+  }), { rootMargin:'-45% 0px -50% 0px' });
+  document.querySelectorAll('section').forEach(s => secObs.observe(s));
+
+  // Reveal on scroll
+  const rev = new IntersectionObserver(es => es.forEach((en,i) => {
+    if (en.isIntersecting){ setTimeout(()=>en.target.classList.add('in'), i*60); rev.unobserve(en.target); }
+  }), { threshold:.12 });
+  document.querySelectorAll('.reveal').forEach(el => rev.observe(el));
+
+  // Rotating verb
+  const verbs = ['create','design','build','make'];
+  let vi = 0; const rot = document.getElementById('rot');
+  setInterval(() => { vi = (vi+1) % verbs.length; rot.innerHTML = '<span>'+verbs[vi]+'</span>'; }, 2200);
+
+  // Toast
+  const toast = document.getElementById('toast');
+  function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t = setTimeout(()=>toast.classList.remove('show'),1800); }
+
+  // Copy email
+  document.getElementById('copyEmail').onclick = async () => {
+    const email = 'hello@yourname.com';
+    try { await navigator.clipboard.writeText(email); showToast('Email copied'); }
+    catch(e){ showToast(email); }
+  };
+
+  // High-five counter
+  let hf = parseInt(store.get('hf') || '0', 10);
+  const hfCount = document.getElementById('hfCount'), hand = document.getElementById('hand');
+  const render = () => hfCount.textContent = String(hf).padStart(5,'0');
+  render();
+  function highFive(){
+    hf++; render(); store.set('hf', hf);
+    hand.classList.remove('pop'); void hand.offsetWidth; hand.classList.add('pop');
+    if (hf % 25 === 0) showToast('🎉 ' + hf + ' high-fives!');
+  }
+  document.getElementById('hfBtn').onclick = highFive;
+
+  // ---------- CASE STUDIES ----------
+  // Edit this data to fill in each case study.
+  const CASES = [
+    { id:1, title:'Project One', tag:'A one-line tagline about the problem you solved.', years:'2026', role:'Lead Product Designer',
+      scope:'Research, UX, UI, Prototyping', read:'8 min read', grad:'linear-gradient(135deg,#3d5afe,#00b8d4)',
+      summary:'A short summary of the project: what the product is, who it serves, what you redesigned and the headline result.',
+      impact:[['30k+','monthly visits'],['10k+','records managed'],['60%','faster task completion'],['$1M','estimated annual savings']],
+      results:[['85','usability score (SUS)'],['40%','feature adoption'],['2×','growth in total usage']] },
+    { id:2, title:'Project Two', tag:'A side project you built and shipped yourself.', years:'2025 – 2026', role:'Founder & Product Designer',
+      scope:'Strategy, Brand, UX, UI, Build', read:'6 min read', grad:'linear-gradient(135deg,#ff6a3d,#ffc94d)',
+      summary:'Describe the idea, why you started it, and how it grew from a weekend project into something people pay for.',
+      impact:[['1,500+','users'],['100+','paying subscribers'],['4.8★','app rating'],['30%','weekly retention']],
+      results:[['4.8','average rating'],['25%','free → paid conversion'],['3×','growth since launch']] },
+    { id:3, title:'AmbitionBox Employer Dashboard', tag:'Revamping the employer dashboard.', years:'2024', role:'Product Designer',
+      scope:'Research, Benchmarking, Wireframing, UI', read:'6 min read', grad:'linear-gradient(135deg,#1b2a6b,#3d5afe)', thumb:'img/hero.jpg',
+      render: renderAmbition },
+    { id:4, title:'Project Four', tag:'Turning a slow process into a fast one.', years:'2025', role:'Product Designer',
+      scope:'Research, Service Design, UX, UI', read:'7 min read', grad:'linear-gradient(135deg,#0f9b8e,#c8f169)',
+      summary:'Explain the old process, why it was painful, and how the new experience cut the time it takes.',
+      impact:[['6 → 1','weeks turnaround'],['95%','satisfaction'],['500+','requests a month'],['80%','less manual work']],
+      results:[['88','usability score (SUS)'],['95%','user satisfaction'],['5×','faster turnaround']] }
+  ];
+
+  const SECTIONS = [
+    ['overview','Overview'],['challenge','Challenge'],['impact','Impact'],['collaboration','Collaboration'],['users','Users'],
+    ['research','Research'],['audit','Audit'],['strategy','Strategy'],['process','Design process'],['decisions','Key decisions'],
+    ['features','Key features'],['results','Results'],['feedback','Feedback'],['more','More work']
+  ];
+
+  const ph = (grad, label, h, ui=true) => `<div class="ph" data-label="${label}" style="background:${grad};${h?`height:${h}px`:'aspect-ratio:16/9'}">${ui?'<div class="ui"></div>':''}</div>`;
+  const stats = arr => `<div class="stat-grid">${arr.map(([b,s])=>`<div class="stat"><b>${b}</b><small>${s}</small></div>`).join('')}</div>`;
+
+  function renderCase(c){
+    const others = CASES.filter(o => o.id !== c.id);
+    return `
+    <div class="cs-layout">
+      <aside class="toc">
+        <a class="back" href="#work">← Back</a>
+        ${SECTIONS.map(([id,l])=>`<button data-to="${id}">${l}</button>`).join('')}
+        <a class="back bottom" href="#work">← Back</a>
+      </aside>
+      <article>
+        <a class="back-m" href="#work">← Back to work</a>
+        <div class="cs-sec cs-hero" id="cs-overview" style="padding-top:0">
+          <div class="eyebrow">Case study</div>
+          <h1>${c.title}</h1>
+          <div class="tag">${c.tag}</div>
+          <span class="read">${c.read}</span>
+          <dl class="cs-meta"><div><dt>Role</dt><dd>${c.role}</dd></div><div><dt>Years</dt><dd>${c.years}</dd></div><div><dt>Scope</dt><dd>${c.scope}</dd></div></dl>
+          <div class="prose"><p>${c.summary}</p></div>
+          ${ph(c.grad,'Hero image or demo video',null)}
+        </div>
+
+        <div class="cs-sec prose" id="cs-challenge">
+          <h2>The challenge</h2>
+          <p>What was broken, for whom, and why it mattered. Name the constraints: timeline, legacy systems, technical limits, stakeholders.</p>
+          <p>Close with the one question the project set out to answer.</p>
+        </div>
+
+        <div class="cs-sec" id="cs-impact"><h2>Impact</h2>${stats(c.impact)}</div>
+
+        <div class="cs-sec prose" id="cs-collaboration">
+          <h2>Collaboration</h2>
+          <p>Who you worked with (PMs, engineers, researchers, legal, leadership) and what you owned end to end, such as research, the design system, or the prototype.</p>
+        </div>
+
+        <div class="cs-sec" id="cs-users">
+          <h2>Designing for real people</h2>
+          <div class="prose"><p>Introduce the main user groups and how their needs differ.</p></div>
+          <div class="two">
+            <div class="card persona"><div class="avatar" style="background:${c.grad}"></div><div class="label">User type</div><h3>Primary user</h3><p>One line on who they are and what they need from the product.</p></div>
+            <div class="card persona"><div class="avatar" style="background:linear-gradient(135deg,#5a5f66,#232526)"></div><div class="label">User type</div><h3>Secondary user</h3><p>One line on who they are and what they need from the product.</p></div>
+          </div>
+        </div>
+
+        <div class="cs-sec" id="cs-research">
+          <h2>Talking to users &amp; stakeholders</h2>
+          <div class="prose"><p>How you ran research: interviews, surveys, analytics, workshops. Questions you asked:</p>
+            <ul><li>What's the first thing you do when you open the tool?</li><li>Where do you get stuck or need help?</li><li>What workarounds have you built?</li><li>What would make this twice as fast?</li></ul></div>
+          <div class="two">
+            <div class="card"><div class="label">User pain points</div><ul><li>Pain point one</li><li>Pain point two</li><li>Pain point three</li></ul></div>
+            <div class="card"><div class="label">Business requirements</div><ul><li>Requirement one</li><li>Requirement two</li><li>Requirement three</li></ul></div>
+          </div>
+          ${ph('linear-gradient(135deg,#2a2a2a,#3d3d3d)','Research synthesis board',320,false)}
+        </div>
+
+        <div class="cs-sec" id="cs-audit">
+          <h2>Auditing the existing experience</h2>
+          <div class="prose"><p>A walkthrough of the legacy product with numbered problem areas.</p></div>
+          <div style="position:relative">
+            ${ph('linear-gradient(135deg,#3a3a3a,#555)','Legacy screenshot',null)}
+            <span class="pin" style="top:22%;left:14%">1</span><span class="pin" style="top:40%;left:62%">2</span>
+            <span class="pin" style="top:70%;left:30%">3</span><span class="pin" style="top:28%;left:84%">4</span>
+          </div>
+          <div class="notes">
+            <div class="card"><h3><i>1</i>Look &amp; feel</h3><p>What felt dated or inconsistent.</p></div>
+            <div class="card"><h3><i>2</i>Navigation</h3><p>Where people got lost.</p></div>
+            <div class="card"><h3><i>3</i>Core flow</h3><p>Steps that were slow or confusing.</p></div>
+            <div class="card"><h3><i>4</i>Worth keeping</h3><p>What already worked and stayed.</p></div>
+          </div>
+        </div>
+
+        <div class="cs-sec" id="cs-strategy">
+          <h2>Exploring two strategies</h2>
+          <div class="two">
+            <div class="card"><div class="label">Option A</div><h3>Quick fix</h3><p>Bolt improvements onto the existing product. Faster to ship, but the core problems stay.</p>${ph('linear-gradient(135deg,#3a3a3a,#555)','Option A',180)}</div>
+            <div class="card good"><div class="label">Option B · Chosen</div><h3>Full redesign</h3><p>Rethink the experience from the ground up. Takes longer, but fixes the root cause.</p>${ph(c.grad,'Option B',180)}</div>
+          </div>
+        </div>
+
+        <div class="cs-sec" id="cs-process">
+          <h2>Design process</h2>
+          <div class="three">
+            <div>${ph('linear-gradient(135deg,#e8e4da,#cfc9bb)','Sketch',200,false)}<p class="cap">01 · Sketches to explore layouts quickly</p></div>
+            <div>${ph('linear-gradient(135deg,#9a9a9a,#6b6b6b)','Wireframe',200)}<p class="cap">02 · Wireframes to test structure</p></div>
+            <div>${ph(c.grad,'High fidelity',200)}<p class="cap">03 · High fidelity, ready to build</p></div>
+          </div>
+        </div>
+
+        <div class="cs-sec" id="cs-decisions">
+          <h2>Key decisions</h2>
+          <div class="prose"><p>Drag the slider to compare the old and new experience.</p></div>
+          <div class="ba">
+            <div class="side before"><span>Before</span></div>
+            <div class="side after" style="background:${c.grad}"><span>After</span></div>
+            <div class="handle"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Compare before and after">
+          </div>
+          <div class="two">
+            <div class="card"><div class="label">Pushback</div><h3>Decision one</h3><p>What was proposed, why you pushed back, and what you shipped instead.</p></div>
+            <div class="card"><div class="label">Pushback</div><h3>Decision two</h3><p>What was proposed, why you pushed back, and what you shipped instead.</p></div>
+          </div>
+        </div>
+
+        <div class="cs-sec" id="cs-features">
+          <h2>Key features</h2>
+          <div class="two">
+            ${['Dashboard','Data table','Create flow','Detail panel'].map(f=>`<div class="card">${ph(c.grad,f+' video',180)}<h3 style="margin-top:16px">${f}</h3><p>One or two sentences on what it does and why it matters.</p></div>`).join('')}
+          </div>
+        </div>
+
+        <div class="cs-sec" id="cs-results"><h2>Results</h2>${stats(c.results)}</div>
+
+        <div class="cs-sec" id="cs-feedback">
+          <h2>Colleague feedback</h2>
+          <div class="two">
+            <div class="quote"><p>“A short quote from a PM or manager about working with you.”</p><b>Name Surname</b><small>Product Manager, Company</small></div>
+            <div class="quote"><p>“A short quote from an engineer or stakeholder about the impact.”</p><b>Name Surname</b><small>Engineering Lead, Company</small></div>
+          </div>
+        </div>
+
+        ${moreWork(c)}
+      </article>
+    </div>`;
+  }
+
+  // ---- Shared bits ----
+  const shot = (src, alt, tall) => `<div class="shotbox${tall?' tall':''}" data-zoom="${src}"><img src="${src}" alt="${alt}" loading="lazy"></div>`;
+  const moreWork = c => `<div class="cs-sec" id="cs-more" style="padding-bottom:40px">
+      <h2>More of my work</h2>
+      <div class="more">${CASES.filter(o=>o.id!==c.id).map(o=>`<a href="#case-${o.id}"><div class="thumb" style="background:${o.thumb?`url(${o.thumb}) left top/cover,`:''}${o.grad}"></div><div class="t"><b>${o.title}</b><small>${o.tag}</small></div></a>`).join('')}</div>
+    </div>`;
+  const shell = (secs, body) => `<div class="cs-layout">
+      <aside class="toc"><a class="back" href="#work">← Back</a>
+        ${secs.map(([id,l])=>`<button data-to="${id}">${l}</button>`).join('')}
+        <a class="back bottom" href="#work">← Back</a></aside>
+      <article><a class="back-m" href="#work">← Back to work</a>${body}</article></div>`;
+  const heroBlock = (c, summary, media) => `<div class="cs-sec cs-hero" id="cs-overview" style="padding-top:0">
+      <div class="eyebrow">Case study</div><h1>${c.title}</h1><div class="tag">${c.tag}</div><span class="read">${c.read}</span>
+      <dl class="cs-meta"><div><dt>Role</dt><dd>${c.role}</dd></div><div><dt>Year</dt><dd>${c.years}</dd></div><div><dt>Scope</dt><dd>${c.scope}</dd></div></dl>
+      <div class="prose"><p>${summary}</p></div>${media}</div>`;
+
+  // ---- AmbitionBox case study (from Case_Study.pdf) ----
+  function renderAmbition(c){
+    const secs = [['overview','Overview'],['problem','The problem'],['initial','Initial research'],['pain','Pain points'],['users','User research'],
+      ['bench','Benchmarking'],['goals','Goals'],['wire','Wireframing'],['feedback','Feedback & iteration'],['final','Final design'],
+      ['status','Status & next steps'],['learning','Learnings'],['more','More work']];
+    const iters = [1,2,3,4,5].map(n=>`<figure data-zoom="img/it${n}.jpg"><div class="frame"><img src="img/it${n}.jpg" alt="Iteration ${n}" loading="lazy"></div><figcaption>${['1st','2nd','3rd','4th','5th'][n-1]} iteration</figcaption></figure>`).join('');
+    const modules = [
+      ['Overview','Total reviews, followers, interviews and overall company rating in one header.'],
+      ['Key highlights','Real-time updates on activity happening on the company page.'],
+      ['Recommended actions','Actionable updates to improve brand image and engagement.'],
+      ['Review & rating trend','Trends over time, with monthly, quarterly and yearly filters.'],
+      ['Rating analytics','Category ratings and a breakdown by rating, with supporting numbers.'],
+      ['Review section','Recent reviews upfront, a clear CTA to respond, reviews by sentiment.'],
+      ['Competitor intelligence','Industry-wise comparison, top performers and a customisable list.'],
+      ['User traffic','Page view and user visit trends, linked to detailed insights.'],
+      ['Campaign analytics','Ad stats, subscription info and new ad creation.'],
+      ['Interview insights','Interview experience and process insights.'],
+      ['Useful resources','Quick links to common employer tasks.']
+    ].map(([t,d])=>`<div class="card"><h3>${t}</h3><p>${d}</p></div>`).join('');
+
+    return shell(secs, `
+      ${heroBlock(c,'The goal was to redesign the dashboard homepage for companies on AmbitionBox, so they could easily track followers, see and respond to reviews, and follow interviews associated with their company. The focus was a user-friendly, centralised space where companies could monitor every key metric, improving engagement and decision-making through a seamless experience.', shot('img/hero.jpg','Redesigned AmbitionBox employer dashboard'))}
+
+      <div class="cs-sec" id="cs-glance">${stats([['11','modules unified in one dashboard'],['5','wireframe iterations'],['5','platforms benchmarked'],['3','teams consulted: sales, business, HR']])}</div>
+
+      <div class="cs-sec prose" id="cs-problem">
+        <h2>Understanding the problem</h2>
+        <p>Companies on AmbitionBox had a dedicated space to track their interactions with the platform's audience. However, information about followers, reviews, interviews and other relevant metrics was scattered, causing friction in accessing insights.</p>
+        <p>I identified the need for a consolidated, easy-to-use interface that would:</p>
+        <ul><li>Provide a real-time overview of company-specific metrics.</li>
+            <li>Simplify tracking of data across multiple parameters (reviews, followers, interviews).</li>
+            <li>Offer actionable insights for improving employer branding and employee engagement.</li></ul>
+      </div>
+
+      <div class="cs-sec" id="cs-initial">
+        <div class="split">
+          <div class="prose"><h2>Initial research</h2>
+            <p>I began by diving into the companies listed on AmbitionBox, exploring all the information we were showcasing for each one. I went through every page of a company's profile and pinpointed the key elements that could be incorporated into the dashboard.</p>
+            <p>After compiling a long list of features, I trimmed it down, removing those that weren't as relevant from an employer's perspective.</p></div>
+          ${shot('img/research.jpg','Rating breakdown and department-wise data from company profiles')}
+        </div>
+      </div>
+
+      <div class="cs-sec" id="cs-pain">
+        <h2>Defining key pain points</h2>
+        <div class="prose">
+          <p>I started with the existing dashboard and wrote a design hypothesis to guide the solution. It quickly became clear that we had a lot of valuable information for employers, but it was scattered across internal pages. This created several hurdles:</p>
+          <ul><li><b>Scattered data:</b> HR teams had to visit multiple pages to retrieve reviews, followers and interview data.</li>
+              <li><b>Manual report building:</b> companies often compiled data by hand, wasting time.</li>
+              <li><b>No real-time insights:</b> data wasn't presented in a way that supported real-time decisions.</li></ul>
+          <p>We had also recently started onboarding companies, but there was no dedicated space to show what we offered or how they could benefit from listing on AmbitionBox. Companies weren't seeing the full value of the platform. We needed a space that highlighted our offerings and clearly communicated the advantages to employers.</p>
+        </div>
+        ${shot('img/painpoints.jpg','Annotated audit of the existing employer dashboard')}
+        <p class="cap">Audit of the old dashboard: unclear ratings, missing supporting numbers, no trends or time filters, complex charts and too many links in one place.</p>
+      </div>
+
+      <div class="cs-sec prose" id="cs-users">
+        <h2>User research</h2>
+        <p>I worked with our sales team to understand what employers cared about most when AmbitionBox was pitched to them. I also spoke with HR professionals and senior executives, the primary users of the dashboard, who rely on its numbers for monthly and quarterly meetings. Key insights:</p>
+        <ul><li>Companies want to monitor KPIs like <b>follower count, reviews received and interview feedback</b> to track brand health.</li>
+            <li>There is a desire for <b>detailed but digestible data visualisation</b>.</li>
+            <li>HR teams <b>struggle to move between multiple reports or pages</b> to get insights.</li>
+            <li>An ideal solution should support <b>quick access to real-time updates</b>.</li></ul>
+      </div>
+
+      <div class="cs-sec" id="cs-bench">
+        <h2>Competitive benchmarking</h2>
+        <div class="prose"><p>I studied dashboards from leading platforms, including LinkedIn, Jira, Google Analytics, Similarweb and Glassdoor, to understand how they organise metrics for companies. Key takeaways: clean data visualisation, easy-to-navigate menus and quick insights into company metrics.</p></div>
+        ${shot('img/benchmark.jpg','Dashboards from benchmarked platforms')}
+      </div>
+
+      <div class="cs-sec" id="cs-goals">
+        <h2>Goals for the redesign</h2>
+        <div class="prose"><p>Based on the pain points, I set four primary goals:</p></div>
+        <div class="four">
+          <div class="goal hl"><h3>Centralisation</h3><p>Aggregate every relevant metric in one dashboard: data, profile editing or report downloads.</p></div>
+          <div class="goal"><h3>Visualisation</h3><p>Present data in a visually appealing, easy-to-understand format.</p></div>
+          <div class="goal"><h3>Actionable insights</h3><p>Provide quick, actionable summaries to inform decisions.</p></div>
+          <div class="goal"><h3>Customisability</h3><p>Let companies prioritise the metrics that matter most to them.</p></div>
+        </div>
+      </div>
+
+      <div class="cs-sec" id="cs-wire">
+        <h2>Wireframing &amp; ideation</h2>
+        <div class="two" style="margin-top:0">
+          <div class="prose"><p>I started with low-fidelity wireframes to explore different layouts, focused on:</p>
+            <ul><li><b>Overview section:</b> total reviews, followers, interviews and ratings at a glance.</li>
+                <li><b>Detailed metrics:</b> graphs and charts for each metric, such as monthly review trends and interview feedback.</li>
+                <li><b>Customisable widgets:</b> let companies choose the data they want to prioritise.</li></ul></div>
+          <div class="prose"><p>Key ideas explored:</p>
+            <ul><li>Pie charts, bar graphs and line graphs to show trends.</li>
+                <li>A KPI-based display for high-level summaries.</li>
+                <li>Dropdown filters for timeframes (last 30 days, last 6 months).</li></ul>
+            <p>After internal review, we presented the wireframes to stakeholders for feedback.</p></div>
+        </div>
+        <div class="iters">${iters}</div>
+        <p class="cap">Click any iteration to view it full size.</p>
+      </div>
+
+      <div class="cs-sec" id="cs-feedback">
+        <h2>Feedback &amp; iteration</h2>
+        <div class="split">
+          <div class="prose">
+            <p>I gathered feedback on the proposed wireframe from the sales, business and HR teams. It pointed to three areas for improvement:</p>
+            <ul><li><b>Data prioritisation:</b> companies wanted to see how their rating trended over a period of time.</li>
+                <li><b>Accessibility:</b> charts had to be readable for users with varying levels of data literacy.</li>
+                <li><b>Responsiveness:</b> the dashboard should work seamlessly across desktop and mobile.</li></ul>
+            <p>I refined the dashboard based on this feedback, balancing detailed insights with overall simplicity.</p>
+          </div>
+          <div>${shot('img/wireframe.jpg','Final wireframe used for testing')}<p class="cap">Final wireframe for testing.</p></div>
+        </div>
+      </div>
+
+      <div class="cs-sec" id="cs-final">
+        <h2>Final design</h2>
+        <div class="prose"><p>The final dashboard brings eleven modules into a single, scannable page:</p></div>
+        <div class="modules">${modules}</div>
+        ${shot('img/final.jpg','Final annotated employer dashboard design', true)}
+      </div>
+
+      <div class="cs-sec" id="cs-status">
+        <div class="two" style="margin-top:0">
+          <div class="card"><div class="label">Current status</div><h3>In development</h3><p>Once it launches, I'll learn how users respond to it and whether the design goals have been met.</p></div>
+          <div class="card"><div class="label">Next step</div><h3>Measure &amp; scale</h3><p>Monitor user behaviour with Microsoft Clarity to see how employers use the dashboard, then use those insights to take it to the next level.</p></div>
+        </div>
+      </div>
+
+      <div class="cs-sec prose" id="cs-learning">
+        <h2>What I learned</h2>
+        <div class="bigquote">Communicate, collaborate, iterate, repeat.</div>
+        <p>This project reinforced the importance of open communication, collaboration and iterative design in creating user-centred solutions.</p>
+        <p>Collaboration between design, product and business teams kept the work aligned with company objectives, while feedback from usability testing refined the design to meet user needs.</p>
+        <p>Iteration played a crucial role in improving the final product and showed that design is an evolving process. It improved the user experience and led to a more effective, data-driven outcome.</p>
+      </div>
+
+      ${moreWork(c)}`);
+  }
+
+  // Lightbox
+  const lb = document.getElementById('lb'), lbImg = lb.querySelector('img');
+  document.addEventListener('click', e => {
+    const z = e.target.closest('[data-zoom]');
+    if (z){ lbImg.src = z.dataset.zoom; lb.classList.add('open'); lb.scrollTop = 0; document.body.style.overflow='hidden'; }
+    else if (e.target.closest('#lb')){ lb.classList.remove('open'); document.body.style.overflow=''; }
+  });
+  document.addEventListener('keydown', e => { if (e.key==='Escape' && lb.classList.contains('open')){ lb.classList.remove('open'); document.body.style.overflow=''; } });
+
+  const homeView = document.getElementById('homeView'), caseView = document.getElementById('caseView');
+  let tocObs;
+  function route(){
+    const m = location.hash.match(/^#case-(\d)$/);
+    const c = m && CASES.find(x => x.id === +m[1]);
+    if (c){
+      caseView.innerHTML = c.render ? c.render(c) : renderCase(c);
+      homeView.hidden = true; caseView.hidden = false;
+      document.title = c.title + ' — Your Name';
+      window.scrollTo(0,0);
+      // TOC scroll + highlight
+      const btns = [...caseView.querySelectorAll('.toc button')];
+      btns.forEach(b => b.onclick = () => document.getElementById('cs-'+b.dataset.to).scrollIntoView({behavior:'smooth'}));
+      tocObs && tocObs.disconnect();
+      tocObs = new IntersectionObserver(es => es.forEach(en => {
+        if (en.isIntersecting) btns.forEach(b => b.classList.toggle('on', 'cs-'+b.dataset.to === en.target.id));
+      }), { rootMargin:'-30% 0px -65% 0px' });
+      caseView.querySelectorAll('.cs-sec').forEach(s => tocObs.observe(s));
+      // before/after slider
+      caseView.querySelectorAll('.ba').forEach(ba => {
+        const r = ba.querySelector('input'), a = ba.querySelector('.after'), h = ba.querySelector('.handle');
+        r.oninput = () => { a.style.clipPath = `inset(0 0 0 ${r.value}%)`; h.style.left = r.value + '%'; };
+      });
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#work'));
+    } else {
+      const wasCase = !caseView.hidden;
+      caseView.hidden = true; caseView.innerHTML = ''; homeView.hidden = false;
+      document.title = 'Your Name — Product Designer';
+      const target = location.hash && document.querySelector(location.hash);
+      if (target) target.scrollIntoView({behavior: wasCase ? 'auto' : 'smooth'});
+      else if (wasCase) window.scrollTo(0,0);
+    }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  // Back to top
+  const totop = document.getElementById('totop');
+  addEventListener('scroll', () => totop.classList.toggle('show', scrollY > 800), {passive:true});
+  totop.onclick = () => scrollTo({top:0, behavior:'smooth'});
+</script>
+</body>
+</html>
